@@ -1,5 +1,4 @@
 from threading import Thread
-from time import sleep
 from inputs import get_gamepad
 import pygame
 
@@ -54,29 +53,14 @@ class PadSteering(Thread):
         self.output[4] = trigger_val
 
 
-class TriggerThread(Thread):
-    def __init__(self, given_pad):
-        Thread.__init__(self)
-        self.pad = given_pad
-        self.trigger_val = 0
-
-    def run(self):
-        while True:
-            self.trigger_val += (self.pad.right_trigger - self.pad.left_trigger)/255
-            sleep(0.05)
-            self.pad.set_trigger(int(self.trigger_val))
-
-
 class MainWindow(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.pad = PadSteering()
         self.pad.start()
-        self.trigger_thread = TriggerThread(self.pad)
-        self.trigger_thread.start()
 
     def run(self):
-        width = 720
+        width = 1080
         height = 720
         size = [width, height]
         window = pygame.display
